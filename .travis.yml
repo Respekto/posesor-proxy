@@ -1,0 +1,17 @@
+sudo: required # for docker
+
+script:
+  - docker build  -t respekto/posesor-proxy .
+
+after_success:
+  # push application image to docker registry
+  # initially will start to push from develop and - in the nearest future - will change to master.
+  - if [ "$TRAVIS_BRANCH" == "develop" ]; then
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker push respekto/posesor-proxy;
+    fi
+
+
+# support for docker
+services:
+  - docker
